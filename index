@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infografía: Decisiones Ganadoras</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Energetic & Playful -->
+    <!-- Plan Narrative & Structure: The infographic is structured as a scrolling narrative that tells the story of the educational program. It begins with the "why" (the problem and target audience), moves to the "how" (the 3-phase learning journey and the digital tools), and finishes with the "what" (how success is measured and the pilot plan). This logical flow is more intuitive and engaging for stakeholders than a traditional report, guiding them through the project's key pillars in a visually compelling way. -->
+    <!-- Visualization & Content Choices: 1. Athlete's Financial Challenges -> Goal: Compare -> Viz: Horizontal Bar Chart -> Justification: Effectively compares the impact of various financial pressures on young athletes, making the problem tangible. -> Library: Chart.js (Canvas). 2. Learning Journey -> Goal: Organize -> Viz: 3-Column Card Layout (Flow Diagram) -> Justification: Clearly visualizes the structured, sequential three-phase process. -> Method: HTML/CSS with Tailwind. 3. Evaluation Strategy -> Goal: Compare -> Viz: Donut Chart -> Justification: Shows the proportional weight of each evaluation method in the overall strategy, highlighting its multi-faceted nature. -> Library: Chart.js (Canvas). 4. Digital Ecosystem -> Goal: Inform -> Viz: Icon-based Card Grid -> Justification: Quickly showcases the modern, relevant tech stack used in the program. -> Method: HTML/CSS with Tailwind. CONFIRMING NO SVG. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 450px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 50%;
+            background-color: #ef4444;
+            transition: all 0.3s ease;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+            left: 0;
+        }
+        .nav-link:hover {
+            color: #ef4444;
+        }
+        .swot-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        .swot-item {
+            padding: 1rem;
+            border-radius: 0.5rem;
+        }
+        .swot-s { background-color: #dcfce7; border-left: 4px solid #10b981; }
+        .swot-w { background-color: #fee2e2; border-left: 4px solid #ef4444; }
+        .swot-o { background-color: #e0f2fe; border-left: 4px solid #3b82f6; }
+        .swot-t { background-color: #fef9e7; border-left: 4px solid #f59e0b; }
+        @media (min-width: 768px) {
+            .swot-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body class="text-gray-700">
+
+    <header class="bg-white/90 backdrop-blur-lg sticky top-0 z-50 shadow-md">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-gray-800">Decisiones Ganadoras</h1>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#perfil" class="nav-link text-gray-600 font-semibold">El Atleta</a>
+                <a href="#viaje" class="nav-link text-gray-600 font-semibold">El Viaje</a>
+                <a href="#herramientas" class="nav-link text-gray-600 font-semibold">Herramientas</a>
+                <a href="#evaluacion" class="nav-link text-gray-600 font-semibold">Evaluación</a>
+                <a href="#gemini-features" class="nav-link text-gray-600 font-semibold">✨ Asesor AI</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="text-center py-24 bg-gray-50">
+            <div class="container mx-auto px-6">
+                <h2 class="text-4xl md:text-6xl font-extrabold text-gray-800 mb-4 tracking-tight">El Camino al Podio Financiero</h2>
+                <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">Una infografía interactiva sobre el plan de educación financiera diseñado para equipar a los jóvenes deportistas de Colombia con las habilidades para asegurar su futuro económico.</p>
+            </div>
+        </section>
+
+        <section id="perfil" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h3 class="text-3xl font-bold text-gray-800">Entendiendo a Nuestro Jugador Estrella</h3>
+                    <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">El programa se centra en jóvenes atletas de 18 a 20 años: nativos digitales con grandes sueños, pero que enfrentan desafíos financieros únicos que pueden impactar sus carreras y sus vidas.</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <h4 class="text-2xl font-semibold text-gray-800 mb-6">Principales Desafíos Financieros</h4>
+                        <div class="chart-container">
+                            <canvas id="challengesChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="space-y-6">
+                        <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                            <h5 class="font-bold text-lg text-gray-800">Contexto Diverso</h5>
+                            <p>Provienen de diferentes estratos socioeconómicos, lo que resulta en niveles muy variados de educación financiera inicial.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                            <h5 class="font-bold text-lg text-gray-800">Vulnerabilidad Económica</h5>
+                            <p>A pesar del potencial de ingresos, la corta duración de sus carreras y la falta de planificación los exponen a riesgos financieros significativos.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                            <h5 class="font-bold text-lg text-gray-800">Aspiraciones Elevadas</h5>
+                            <p>Fuerte deseo de mejorar su calidad de vida y la de sus familias, lo que puede llevar a decisiones financieras impulsivas si no se cuenta con la guía adecuada.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="viaje" class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h3 class="text-3xl font-bold text-gray-800">El Viaje del Atleta: Un Plan en 3 Fases</h3>
+                    <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">Hemos diseñado un recorrido de aprendizaje progresivo que guía al deportista desde los conceptos básicos hasta la aplicación estratégica de sus conocimientos financieros.</p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="card bg-gray-50 p-8 rounded-xl text-center border-t-4 border-red-500">
+                        <div class="text-5xl mb-4">1</div>
+                        <h4 class="text-xl font-bold text-gray-800 mb-2">Fase 1: Activación</h4>
+                        <p class="text-gray-600">Comenzamos con un diagnóstico para entender el nivel de cada atleta a través de un quiz y una entrevista personal. El objetivo es establecer una línea de base y construir una relación de confianza con su mentor.</p>
+                    </div>
+                    <div class="card bg-gray-50 p-8 rounded-xl text-center border-t-4 border-blue-500">
+                        <div class="text-5xl mb-4">2</div>
+                        <h4 class="text-xl font-bold text-gray-800 mb-2">Fase 2: Desarrollo</h4>
+                        <p class="text-gray-600">El núcleo del aprendizaje. A través de módulos interactivos, videos, podcasts y sesiones en vivo, los atletas construyen su conocimiento. Se fomenta la colaboración en foros y el aprendizaje a través del juego.</p>
+                    </div>
+                    <div class="card bg-gray-50 p-8 rounded-xl text-center border-t-4 border-green-500">
+                        <div class="text-5xl mb-4">3</div>
+                        <h4 class="text-xl font-bold text-gray-800 mb-2">Fase 3: Consolidación</h4>
+                        <p class="text-gray-600">Es hora de aplicar lo aprendido. La evaluación final se realiza en un entorno de juego con el mentor. Se mide el progreso con un post-quiz y se finaliza con una sesión de reflexión para trazar un plan de acción personal.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="herramientas" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h3 class="text-3xl font-bold text-gray-800">Nuestro Ecosistema Digital</h3>
+                    <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">Aprovechamos las plataformas que los jóvenes atletas ya usan y aman, creando una experiencia de aprendizaje integrada, social y accesible desde cualquier lugar.</p>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 text-center">
+                    <div class="card bg-white p-6 rounded-lg shadow-lg"><span class="text-4xl">🎓</span><h5 class="font-bold mt-2">LMS Central</h5><p class="text-sm text-gray-500">Canvas / Moodle</p></div>
+                    <div class="card bg-white p-6 rounded-lg shadow-lg"><span class="text-4xl">⚽</span><h5 class="font-bold mt-2">Gamificación</h5><p class="text-sm text-gray-500">Financial Soccer</p></div>
+                    <div class="card bg-white p-6 rounded-lg shadow-lg"><span class="text-4xl">📱</span><h5 class="font-bold mt-2">Contenido Corto</h5><p class="text-sm text-gray-500">TikTok</p></div>
+                    <div class="card bg-white p-6 rounded-lg shadow-lg"><span class="text-4xl">🔴</span><h5 class="font-bold mt-2">Interacción en Vivo</h5><p class="text-sm text-gray-500">Twitch</p></div>
+                    <div class="card bg-white p-6 rounded-lg shadow-lg"><span class="text-4xl">🎧</span><h5 class="font-bold mt-2">Aprendizaje Móvil</h5><p class="text-sm text-gray-500">Podcasts</p></div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="evaluacion" class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h3 class="text-3xl font-bold text-gray-800">Midiendo el Éxito: Una Evaluación Integral</h3>
+                    <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">Nuestra estrategia de evaluación combina métricas cuantitativas y cualitativas para obtener una visión completa del progreso y la comprensión de cada atleta.</p>
+                </div>
+                <div class="grid md:grid-cols-5 gap-12 items-center">
+                    <div class="md:col-span-2">
+                        <div class="chart-container">
+                             <canvas id="evaluationChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="md:col-span-3 space-y-4">
+                        <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                            <h5 class="font-bold text-lg text-gray-800">Evaluación Basada en Juegos (40%)</h5>
+                            <p>El mentor y el atleta juegan juntos en un entorno simulado, permitiendo una retroalimentación personalizada e inmediata sobre la toma de decisiones.</p>
+                        </div>
+                         <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                            <h5 class="font-bold text-lg text-gray-800">Quizzes y Entrevistas (25%)</h5>
+                            <p>Un quiz pre y post-módulo mide el crecimiento del conocimiento, mientras que las entrevistas con el tutor evalúan la comprensión conceptual y actitudinal.</p>
+                        </div>
+                        <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                            <h5 class="font-bold text-lg text-gray-800">Observación y Participación (20%)</h5>
+                            <p>El tutor realiza una valoración cualitativa de la participación en foros, sesiones en vivo y actividades colaborativas.</p>
+                        </div>
+                        <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                            <h5 class="font-bold text-lg text-gray-800">Reflexión y Feedback (15%)</h5>
+                            <p>Se utilizan encuestas y sesiones de reflexión para recoger la percepción del atleta sobre la relevancia, usabilidad y motivación del programa.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="gemini-features" class="py-20 bg-gray-100">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h3 class="text-3xl font-bold text-gray-800">Tu Entrenador Financiero ✨</h3>
+                    <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">Interactúa con nuestro asesor inteligente para aclarar conceptos y explorar ideas de inversión de forma instantánea.</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-12">
+                    <div class="bg-white p-8 rounded-lg shadow-lg">
+                        <h4 class="text-2xl font-bold text-gray-800 mb-4">Análisis de Metas ✨</h4>
+                        <p class="mb-4 text-gray-600">Escribe una meta financiera y te ayudaremos a analizarla con un DAFO (Debilidades, Amenazas, Fortalezas, Oportunidades).</p>
+                        <textarea id="swot-input" rows="3" placeholder="Ej: 'Ahorrar para un auto en 2 años'" class="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"></textarea>
+                        <button id="swot-btn" class="w-full bg-blue-500 text-white font-bold py-3 px-6 rounded-lg shadow hover:bg-blue-600 transition-colors duration-300">
+                            Analizar Meta
+                        </button>
+                        <div id="swot-result" class="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200 min-h-[100px] flex items-center justify-center text-center">
+                            <p class="text-gray-500">El análisis DAFO aparecerá aquí.</p>
+                        </div>
+                    </div>
+                    <div class="bg-white p-8 rounded-lg shadow-lg">
+                        <h4 class="text-2xl font-bold text-gray-800 mb-4">Consejos en Audio ✨</h4>
+                        <p class="mb-4 text-gray-600">Escribe una frase o concepto y escúchalo. Ideal para repasar mientras entrenas.</p>
+                        <textarea id="tts-input" rows="3" placeholder="Ej: 'Invertir en ETFs es una buena opción para principiantes.'" class="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500 mb-4"></textarea>
+                        <button id="tts-btn" class="w-full bg-green-500 text-white font-bold py-3 px-6 rounded-lg shadow hover:bg-green-600 transition-colors duration-300">
+                            Reproducir Audio
+                        </button>
+                        <div id="tts-result" class="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200 min-h-[100px] flex items-center justify-center text-center">
+                            <audio id="audio-player" controls class="hidden w-full"></audio>
+                            <p id="tts-placeholder" class="text-gray-500">El audio se reproducirá aquí.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-800 text-white text-center py-8">
+        <div class="container mx-auto px-6">
+            <p>Infografía creada para el proyecto "Decisiones Ganadoras".</p>
+        </div>
+    </footer>
+
+    <script>
+        const wrapLabel = (label, maxWidth) => {
+            const words = label.split(' ');
+            let lines = [];
+            let currentLine = words[0];
+            for (let i = 1; i < words.length; i++) {
+                if ((currentLine + ' ' + words[i]).length > maxWidth) {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                } else {
+                    currentLine += ' ' + words[i];
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        };
+        const pcmToWav = (pcmData, sampleRate) => {
+            const dataView = new DataView(new ArrayBuffer(44 + pcmData.byteLength));
+            const writeString = (view, offset, string) => {
+                for (let i = 0; i < string.length; i++) {
+                    view.setUint8(offset + i, string.charCodeAt(i));
+                }
+            };
+            writeString(dataView, 0, 'RIFF');
+            dataView.setUint32(4, 36 + pcmData.byteLength, true);
+            writeString(dataView, 8, 'WAVE');
+            writeString(dataView, 12, 'fmt ');
+            dataView.setUint32(16, 16, true);
+            dataView.setUint16(20, 1, true);
+            dataView.setUint16(22, 1, true);
+            dataView.setUint32(24, sampleRate, true);
+            dataView.setUint32(28, sampleRate * 2, true);
+            dataView.setUint16(32, 2, true);
+            dataView.setUint16(34, 16, true);
+            writeString(dataView, 36, 'data');
+            dataView.setUint32(40, pcmData.byteLength, true);
+            const pcm16 = new Int16Array(pcmData);
+            for (let i = 0; i < pcm16.length; i++) {
+                dataView.setInt16(44 + i * 2, pcm16[i], true);
+            }
+            return new Blob([dataView], { type: 'audio/wav' });
+        };
+        const base64ToArrayBuffer = (base64) => {
+            const binaryString = atob(base64);
+            const len = binaryString.length;
+            const bytes = new Uint8Array(len);
+            for (let i = 0; i < len; i++) {
+                bytes[i] = binaryString.charCodeAt(i);
+            }
+            return bytes.buffer;
+        };
+
+        const challengesData = {
+            labels: [
+                'Falta de Conocimiento Financiero Básico',
+                'Presión Social y Familiar para Gastar',
+                'Riesgo de Malas Decisiones de Inversión',
+                'Corta Duración de la Carrera Profesional'
+            ].map(label => wrapLabel(label, 16)),
+            datasets: [{
+                label: 'Nivel de Impacto',
+                data: [90, 75, 85, 95],
+                backgroundColor: '#ef4444',
+                borderColor: '#ef4444',
+                borderWidth: 1,
+                borderRadius: 4,
+            }]
+        };
+
+        const challengesCtx = document.getElementById('challengesChart').getContext('2d');
+        new Chart(challengesCtx, {
+            type: 'bar',
+            data: challengesData,
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            title: (tooltipItems) => {
+                                const item = tooltipItems[0];
+                                let label = item.chart.data.labels[item.dataIndex];
+                                return Array.isArray(label) ? label.join(' ') : label;
+                            },
+                            label: (context) => `Impacto: ${context.raw}`
+                        }
+                    }
+                },
+                scales: { x: { beginAtZero: true, max: 100 } }
+            }
+        });
+
+        const evaluationData = {
+            labels: ['Basada en Juegos', 'Quizzes y Entrevistas', 'Observación y Participación', 'Reflexión y Feedback'],
+            datasets: [{
+                data: [40, 25, 20, 15],
+                backgroundColor: ['#ef4444', '#3b82f6', '#10b981', '#8b5cf6'],
+                hoverOffset: 8,
+            }]
+        };
+
+        const evaluationCtx = document.getElementById('evaluationChart').getContext('2d');
+        new Chart(evaluationCtx, {
+            type: 'doughnut',
+            data: evaluationData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '60%',
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { padding: 20 }
+                    },
+                    tooltip: {
+                         callbacks: {
+                            title: (tooltipItems) => tooltipItems[0].label,
+                            label: (context) => ` Peso: ${context.raw}%`
+                        }
+                    }
+                }
+            }
+        });
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        const swotBtn = document.getElementById('swot-btn');
+        const swotInput = document.getElementById('swot-input');
+        const swotResult = document.getElementById('swot-result');
+        const ttsBtn = document.getElementById('tts-btn');
+        const ttsInput = document.getElementById('tts-input');
+        const audioPlayer = document.getElementById('audio-player');
+        const ttsPlaceholder = document.getElementById('tts-placeholder');
+
+        const callGeminiApi = async (payload) => {
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=`;
+            const requestOptions = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            };
+            let response;
+            try {
+                response = await fetch(apiUrl, requestOptions);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const result = await response.json();
+                return result.candidates[0].content.parts[0].text;
+            } catch (error) {
+                console.error('Error calling Gemini API:', error);
+                return 'Lo siento, hubo un error al procesar tu solicitud. Por favor, inténtalo de nuevo.';
+            }
+        };
+
+        swotBtn.addEventListener('click', async () => {
+            const goal = swotInput.value.trim();
+            if (!goal) {
+                swotResult.innerHTML = '<p class="text-red-500 text-center">Por favor, introduce una meta.</p>';
+                return;
+            }
+            swotResult.innerHTML = '<p class="text-blue-500 text-center animate-pulse">Analizando...</p>';
+            const prompt = `Actúa como un analista financiero y mentor de deportistas. Realiza un análisis DAFO (Fortalezas, Oportunidades, Debilidades, Amenazas) para la siguiente meta financiera: '${goal}'. Presenta el resultado en formato JSON.`;
+            const payload = {
+                contents: [{ parts: [{ text: prompt }] }],
+                generationConfig: {
+                    responseMimeType: "application/json",
+                    responseSchema: {
+                        type: "OBJECT",
+                        properties: {
+                            "Fortalezas": {
+                                "type": "ARRAY",
+                                "items": { "type": "STRING" }
+                            },
+                            "Oportunidades": {
+                                "type": "ARRAY",
+                                "items": { "type": "STRING" }
+                            },
+                            "Debilidades": {
+                                "type": "ARRAY",
+                                "items": { "type": "STRING" }
+                            },
+                            "Amenazas": {
+                                "type": "ARRAY",
+                                "items": { "type": "STRING" }
+                            }
+                        }
+                    }
+                }
+            };
+
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=`;
+            const requestOptions = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            };
+            try {
+                swotResult.innerHTML = '<p class="text-blue-500 text-center animate-pulse">Analizando...</p>';
+                const response = await fetch(apiUrl, requestOptions);
+                const result = await response.json();
+                const jsonText = result.candidates?.[0]?.content?.parts?.[0]?.text;
+                if (!jsonText) throw new Error('Invalid response structure');
+                const parsedJson = JSON.parse(jsonText);
+
+                let html = '<div class="swot-grid">';
+                const sections = {
+                    'Fortalezas': 'swot-s',
+                    'Oportunidades': 'swot-o',
+                    'Debilidades': 'swot-w',
+                    'Amenazas': 'swot-t'
+                };
+                for (const key in sections) {
+                    html += `<div class="swot-item ${sections[key]}"><h5 class="font-bold text-gray-800 mb-2">${key}</h5><ul class="list-disc ml-4 text-sm space-y-1">`;
+                    if (parsedJson[key]) {
+                        parsedJson[key].forEach(item => {
+                            html += `<li>${item}</li>`;
+                        });
+                    }
+                    html += '</ul></div>';
+                }
+                html += '</div>';
+                swotResult.innerHTML = html;
+            } catch (error) {
+                console.error('Error calling Gemini API:', error);
+                swotResult.innerHTML = '<p class="text-red-500 text-center">Lo siento, hubo un error. Intenta de nuevo.</p>';
+            }
+        });
+
+        ttsBtn.addEventListener('click', async () => {
+            const text = ttsInput.value.trim();
+            if (!text) {
+                ttsPlaceholder.textContent = 'Por favor, introduce un texto.';
+                return;
+            }
+            ttsPlaceholder.textContent = 'Generando audio...';
+            audioPlayer.style.display = 'none';
+
+            const payload = {
+                contents: [{
+                    parts: [{ text: text }]
+                }],
+                generationConfig: {
+                    responseModalities: ["AUDIO"],
+                    speechConfig: {
+                        voiceConfig: {
+                            prebuiltVoiceConfig: { voiceName: "Puck" }
+                        }
+                    }
+                },
+            };
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=`;
+            const requestOptions = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            };
+
+            try {
+                const response = await fetch(apiUrl, requestOptions);
+                const result = await response.json();
+                const part = result?.candidates?.[0]?.content?.parts?.[0];
+                const audioData = part?.inlineData?.data;
+                const mimeType = part?.inlineData?.mimeType;
+
+                if (audioData && mimeType && mimeType.startsWith("audio/L16")) {
+                    const sampleRateMatch = mimeType.match(/rate=(\d+)/);
+                    const sampleRate = sampleRateMatch ? parseInt(sampleRateMatch[1], 10) : 16000;
+                    const pcmData = base64ToArrayBuffer(audioData);
+                    const wavBlob = pcmToWav(pcmData, sampleRate);
+                    const audioUrl = URL.createObjectURL(wavBlob);
+                    audioPlayer.src = audioUrl;
+                    audioPlayer.style.display = 'block';
+                    ttsPlaceholder.textContent = 'Listo. Presiona reproducir.';
+                    audioPlayer.play();
+                } else {
+                    ttsPlaceholder.textContent = 'Error al generar audio. Intenta de nuevo.';
+                }
+            } catch (error) {
+                console.error('Error calling Gemini TTS API:', error);
+                ttsPlaceholder.textContent = 'Error de conexión. Intenta de nuevo.';
+            }
+        });
+    </script>
+</body>
+</html>
