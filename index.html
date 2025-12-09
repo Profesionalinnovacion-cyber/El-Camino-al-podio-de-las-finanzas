@@ -396,7 +396,7 @@
         const ttsPlaceholder = document.getElementById('tts-placeholder');
 
         const callGeminiApi = async (payload) => {
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=AIzaSyB0ENpidv1Us5qYMlCd_jjHiAwBslYNw18`;
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=AIzaSyCy-RotFL-1SaVJ0CPS2vVhLr7tc4tzxa0`;
             const requestOptions = {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -423,36 +423,22 @@
                 return;
             }
             swotResult.innerHTML = '<p class="text-blue-500 text-center animate-pulse">Analizando...</p>';
-            const prompt = `Actúa como un analista financiero y mentor de deportistas. Realiza un análisis DAFO (Fortalezas, Oportunidades, Debilidades, Amenazas) para la siguiente meta financiera: '${goal}'. Presenta el resultado en formato JSON.`;
+            const prompt = `Actúa como un analista financiero y mentor de deportistas. Realiza un análisis DAFO para la siguiente meta financiera: '${goal}'. 
+
+Responde ÚNICAMENTE con un objeto JSON válido con esta estructura exacta:
+{
+  "Fortalezas": ["punto 1", "punto 2", "punto 3"],
+  "Oportunidades": ["punto 1", "punto 2", "punto 3"],
+  "Debilidades": ["punto 1", "punto 2", "punto 3"],
+  "Amenazas": ["punto 1", "punto 2", "punto 3"]
+}
+
+No incluyas texto adicional, solo el JSON.`;
             const payload = {
-                contents: [{ parts: [{ text: prompt }] }],
-                generationConfig: {
-                    responseMimeType: "application/json",
-                    responseSchema: {
-                        type: "OBJECT",
-                        properties: {
-                            "Fortalezas": {
-                                "type": "ARRAY",
-                                "items": { "type": "STRING" }
-                            },
-                            "Oportunidades": {
-                                "type": "ARRAY",
-                                "items": { "type": "STRING" }
-                            },
-                            "Debilidades": {
-                                "type": "ARRAY",
-                                "items": { "type": "STRING" }
-                            },
-                            "Amenazas": {
-                                "type": "ARRAY",
-                                "items": { "type": "STRING" }
-                            }
-                        }
-                    }
-                }
+                contents: [{ parts: [{ text: prompt }] }]
             };
 
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=`;
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=AIzaSyCy-RotFL-1SaVJ0CPS2vVhLr7tc4tzxa0`;
             const requestOptions = {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -462,8 +448,9 @@
                 swotResult.innerHTML = '<p class="text-blue-500 text-center animate-pulse">Analizando...</p>';
                 const response = await fetch(apiUrl, requestOptions);
                 const result = await response.json();
-                const jsonText = result.candidates?.[0]?.content?.parts?.[0]?.text;
+                let jsonText = result.candidates?.[0]?.content?.parts?.[0]?.text;
                 if (!jsonText) throw new Error('Invalid response structure');
+                jsonText = jsonText.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
                 const parsedJson = JSON.parse(jsonText);
 
                 let html = '<div class="swot-grid">';
@@ -512,7 +499,7 @@
                     }
                 },
             };
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=`;
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=AIzaSyCy-RotFL-1SaVJ0CPS2vVhLr7tc4tzxa0`;
             const requestOptions = {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
